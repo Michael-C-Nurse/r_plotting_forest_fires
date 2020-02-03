@@ -1,0 +1,136 @@
+```{r}
+library(readr)#tidyverse dataframe library
+library(dplyr) #tidyverse data munging and pipe operator library
+library(ggplot2) #tidyverse chart library
+library(purrr) #tidyverse function library
+```
+
+```{r}
+df <- forestfires
+forestfires[0:5, ]
+```
+
+```{r}
+fires_by_month <- forestfires %>% 
+  group_by(month) %>%
+  summarize(total_fires=n())
+
+fires_by_month[1:6, ]
+```
+
+```{r}
+  ggplot(data = fires_by_month) +
+  aes(x = month, y = total_fires) + 
+  geom_bar(stat = "identity") +
+  theme(panel.background = element_rect(fill="white"),
+    axis.line = element_line(size=0.25, color='black'))
+```
+
+```{r}
+fires_by_DOW <- forestfires %>%
+  group_by(day) %>%
+  summarise(total_fires = n())
+
+fires_by_DOW
+```
+  
+```{r}
+ggplot(data = fires_by_DOW) +
+  aes(x = day, y = total_fires) +
+  geom_bar(stat = "identity") +
+  theme(panel.background = element_rect(fill = "white"),
+        axis.line = element_line(size = 0.25, colour ="black"))
+```
+  
+```{r}
+forestfires <- forestfires %>%
+  mutate(month = factor(month, levels = c("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"  )), day = factor(day, levels = c("sun", "mon", "tue", "wed", "thu", "fri", "sat")))
+
+#forestfires
+```
+ 
+```{r}
+create_boxplots <- function(x,y) {
+  ggplot(data = forestfires) +
+  aes_string(x = x, y = y) +
+  geom_boxplot() + 
+  theme(panel.background = element_rect(fill = "white"))
+}
+```
+
+```{r}
+x_var_month <- names(forestfires)[3] ##month
+x_var_day <- names(forestfires)[4] ##day
+y_var <- names(forestfires)[5:12]
+```
+
+```{r}
+month_box <- map2(x_var_month, y_var, create_boxplots) ##visualise variables by month
+month_box
+```
+
+```{r}
+day_box   <- map2(x_var_day, y_var, create_boxplots) ##visualise variables by day
+```
+
+```{r}
+create_scatter = function(x,y) {
+  ggplot(data = forestfires) +
+  aes_string(x = x, y = y) +
+  geom_point() +
+  theme(panel.background = element_rect(fill = "white"))
+}
+```
+
+```{r}
+x_var_scatter <- names(forestfires)[5:12]
+y_var_scatter <- names(forestfires)[13]
+```
+
+```{r}
+scatters <- map2(x_var_scatter, y_var_scatter, create_scatter)
+scatters
+```
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
